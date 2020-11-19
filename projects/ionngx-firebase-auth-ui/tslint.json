@@ -1,0 +1,17 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "ionngx-firebase-auth-ui",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "ionngx-firebase-auth-ui",
+      "kebab-case"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+<ion-item *ngIf="user">
+  <div class="name-display">{{ user.displayName }}</div>
+  <div class="email-display">{{ user.email }}</div>
+</ion-item>
+<ion-list>
+  <ion-item *ngFor="let link of additionalLinks" (click)="handleMenuLinkClick(link)">
+    <ion-icon slot="start" [name]="link.icon"></ion-icon>
+    {{ link.text }}
+  </ion-item>
+  <ion-item *ngIf="!user && canSignIn" (click)="signIn()">
+    <ion-icon slot="start" ios="enter-outline" md="enter-sharp"></ion-icon>
+    {{ signInLabel }}
+  </ion-item>
+  <ion-item *ngIf="!user && canSignUp" (click)="signUp()">
+    <ion-icon slot="start" ios="enter-outline" md="enter-sharp"></ion-icon>
+    {{ signUpLabel }}
+  </ion-item>
+  <ion-item *ngIf="user && canViewProfile" (click)="viewProfile()">
+    <ion-icon slot="start" ios="person-outline" md="person-sharp"></ion-icon>
+    {{ viewProfileLabel }}
+  </ion-item>
+  <ion-item *ngIf="user && canSignOut" (click)="signOut()">
+    <ion-icon slot="start" ios="exit-outline" md="exit-sharp"></ion-icon>
+    {{ signOutLabel }}
+  </ion-item>
+</ion-list>

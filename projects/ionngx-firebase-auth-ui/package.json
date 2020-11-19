@@ -1,0 +1,17 @@
+{
+  "name": "@ionngx/firebase-auth-ui",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/common": "~10.2.0",
+    "@angular/core": "~10.2.0",
+    "@angular/fire": "^6.1.0",
+    "@angular/forms": "~10.2.0",
+    "@ionic/angular": "^5.0.0",
+    "firebase": "^8.0.2",
+    "rxjs": "~6.5.5"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {}
+}

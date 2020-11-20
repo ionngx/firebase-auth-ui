@@ -1,0 +1,7 @@
+<div class="button-bar-container">
+  <div class="button-bar">
+    <ion-fab-button *ngFor="let p of visibleProviders()" (click)="signIn(p.id)" size="small" >
+      <ion-icon [name]="p.icon"></ion-icon>
+    </ion-fab-button>
+  </div>
+</div>

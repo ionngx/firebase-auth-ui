@@ -1,3 +1,5 @@
+import { AuthProviderId } from '../enums';
+
 /**
  * Configuration settings supported by Ionic-Angular Firebase Authentication UI
  */
@@ -11,12 +13,12 @@ export interface IonngxFirebaseAuthUiConfig {
   /**
    * The route to navigate to when an unauthenticated user attempts to access a protected route
    */
-  guardFallbackRoute?: string;
+  guardFallbackRoute?: string | string[];
 
   /**
    * The route to navigate to when the user logs in
    */
-  signInSuccessRoute?: string;
+  signInSuccessRoute?: string | string[];
 
   /**
    * Indicates whether to prevent access to routes protected by the built in guard
@@ -33,6 +35,11 @@ export interface IonngxFirebaseAuthUiConfig {
    * Minimum length allowed for passwords when creating email/password accounts
    */
   passwordMinLength?: number;
+
+  /**
+   * Specifies the authentication providers to support
+   */
+  providers?: AuthProviderId | AuthProviderId[];
 
   /**
    * Indicates whether user email must be verified when creating email/password accounts
@@ -59,17 +66,17 @@ export interface IonngxFirebaseAuthUiConfig {
   /**
    * The route to navigate to when the user initiates sign in
    */
-  signInRoute?: string;
+  signInRoute?: string | string[];
 
   /**
    * The string to use where Sign Out would otherwise appear
    */
-   signOutLabel?: string;
+  signOutLabel?: string;
 
   /**
    * The route to navigtae to when the user initiates sign out
    */
-  signOutRoute?: string;
+  signOutRoute?: string | string[];
 
   /**
    * The string to use where Sign Up would otherwise appear
@@ -79,7 +86,7 @@ export interface IonngxFirebaseAuthUiConfig {
   /**
    * The route to navigate to when the user initiates sign up
    */
-  signUpRoute?: string;
+  signUpRoute?: string | string[];
 
   /**
    * The string to use wher Profile would otherwise appear
@@ -89,5 +96,5 @@ export interface IonngxFirebaseAuthUiConfig {
   /**
    * The route to navigate to when the user initiates view profile
    */
-  viewProfileRoute?: string;
+  viewProfileRoute?: string | string[];
 }

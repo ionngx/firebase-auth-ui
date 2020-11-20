@@ -3,7 +3,7 @@ import { FirebaseAppConfig, FIREBASE_APP_NAME, FIREBASE_OPTIONS } from '@angular
 
 import { NavigatorService } from './navigator.service';
 import { ConfigOverridesToken, ionngxFirebaseAuthUiConfigFactory, IonngxFirebaseAuthUiConfigToken, IonngxFirebaseAuthUiConfig } from './config';
-import { AvatarModule } from './avatar';
+import { ProviderBarComponent } from './provider-bar/provider-bar.component';
 
 @NgModule({
   exports: [],

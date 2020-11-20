@@ -1,4 +1,4 @@
-export enum AuthProvider {
+export enum AuthProviderId {
   ALL = 'all',
   Anonymous = 'anonymous',
   EmailAndPassword = 'firebase',

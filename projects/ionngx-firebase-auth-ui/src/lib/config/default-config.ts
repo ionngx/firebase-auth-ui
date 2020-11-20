@@ -1,3 +1,4 @@
+import { AuthProviderId } from '../enums';
 import { IonngxFirebaseAuthUiConfig } from './ionngx-firebase-auth-ui-config';
 
 /**
@@ -10,6 +11,7 @@ export const defaultConfig: IonngxFirebaseAuthUiConfig = {
   guardProtectedRoutesUntilEmailIsVerified: true,
   passwordMaxLength: 60,
   passwordMinLength: 8,
+  providers: AuthProviderId.ALL,
   requireEmailVerification: true,
   showToastMessageOnAuthenticationSuccess: true,
   showToastMessageOnAuthenticationFailure: true,

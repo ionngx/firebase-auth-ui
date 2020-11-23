@@ -1,6 +1,5 @@
 <ion-item *ngIf="user">
-  <div class="name-display">{{ user.displayName }}</div>
-  <div class="email-display">{{ user.email }}</div>
+  <ion-label>{{ user.displayName }}</ion-label>
 </ion-item>
 <ion-list>
   <ion-item *ngFor="let link of additionalLinks" (click)="handleMenuLinkClick(link)">

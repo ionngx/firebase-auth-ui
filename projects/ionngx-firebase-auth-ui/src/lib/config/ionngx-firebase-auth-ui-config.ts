@@ -1,98 +1,94 @@
+import firebase from 'firebase';
+
 import { AuthProviderId } from '../enums';
+import { StringResources } from '../models/string-resources';
 
 /**
  * Configuration settings supported by Ionic-Angular Firebase Authentication UI
  */
 export interface IonngxFirebaseAuthUiConfig {
-
   /**
    * Indicates whether to sync users with Firestore
    */
   enableFirestoreSync?: boolean;
-
+  /**
+   * The name to use for the Firestore collection when syncing
+   */
+  firestoreCollectionName?: string;
   /**
    * The route to navigate to when an unauthenticated user attempts to access a protected route
    */
   guardFallbackRoute?: string | string[];
-
-  /**
-   * The route to navigate to when the user logs in
-   */
-  signInSuccessRoute?: string | string[];
-
   /**
    * Indicates whether to prevent access to routes protected by the built in guard
    * untill email verification is completed
    */
   guardProtectedRoutesUntilEmailIsVerified?: boolean;
-
   /**
    * Maximum length allowed for passwords when creating email/password accounts
    */
   passwordMaxLength?: number;
-
   /**
    * Minimum length allowed for passwords when creating email/password accounts
    */
   passwordMinLength?: number;
-
   /**
    * Specifies the authentication providers to support
    */
   providers?: AuthProviderId | AuthProviderId[];
-
   /**
    * Indicates whether user email must be verified when creating email/password accounts
    */
   requireEmailVerification?: boolean;
-
   /**
    * Indicates whether to show a toast popup message when user
    * authentication fails
    */
-  showToastMessageOnAuthenticationFailure?: boolean;
-
+  showToastMessageOnFailure?: boolean;
   /**
    * Indicates whether to show a toast popup message when  user
-   * authencation is successful
+   * authentication is successful
    */
-  showToastMessageOnAuthenticationSuccess?: boolean;
-
+  showToastMessageOnSuccess?: boolean;
   /**
-   * The string to use where Sign In would otherwise appear
-   */
-  signInLabel?: string;
-
-  /**
-   * The route to navigate to when the user initiates sign in
+   * The route to navigate to when the user initiates sign in,
+   * allows developers to create a custom user interface
    */
   signInRoute?: string | string[];
-
   /**
-   * The string to use where Sign Out would otherwise appear
+   * A function to call when the user signs in successfully
    */
-  signOutLabel?: string;
-
+  signInSuccessCallback?: (credential: firebase.auth.UserCredential) => void;
   /**
-   * The route to navigtae to when the user initiates sign out
+   * A route to navigate to when the user signs in successfully
+   */
+  signInSuccessRoute?: string | string[];
+  /**
+   * A function to call when the user signs out
+   */
+  signOutCallback?: () => void;
+  /**
+   * A route to navigtae to when the user initiates sign out,
+   * allows developers to create a custom user interface
    */
   signOutRoute?: string | string[];
-
   /**
-   * The string to use where Sign Up would otherwise appear
-   */
-  signUpLabel?: string;
-
-  /**
-   * The route to navigate to when the user initiates sign up
+   * A route to navigate to when the user initiates sign up
+   * allows developers to create a custom user interface
    */
   signUpRoute?: string | string[];
-
   /**
-   * The string to use wher Profile would otherwise appear
+   * A function to call when the user successfully completes sign up
    */
-  viewProfileLabel?: string;
-
+  signUpSuccessCallback?: (credential: firebase.auth.UserCredential) => void;
+  /**
+   * A route to navigate to when the user successfully completes sign up
+   */
+  signUpSuccessRoute?: string | string[]
+  /**
+   * The set of string resources used by components, supports customisation or translation
+   */
+  stringResources?: StringResources;
   /**
    * The route to navigate to when the user initiates view profile
    */

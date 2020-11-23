@@ -4,7 +4,7 @@ import { PopoverController } from '@ionic/angular';
 import { User } from '../models';
 import { AvatarMenuLinkItem } from './avatar-menu-link-item';
 import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
-import { IonngxFirebaseAuthUiService } from '../ionngx-firebase-auth-ui.service';
+import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
 
 
 @Component({

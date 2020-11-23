@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 
-import { IonngxFirebaseAuthUiService } from '../../ionngx-firebase-auth-ui.service';
+import { IonngxFirebaseAuthUiService } from '../../services/ionngx-firebase-auth-ui.service';
 import { User } from '../../models';
-import { NavigatorService } from '../../navigator.service';
+import { NavigatorService } from '../../services/navigator.service';
 import { AvatarMenuLinkItem } from '../avatar-menu-link-item';
 
 @Component({
@@ -45,11 +45,10 @@ export class AvatarMenuComponent {
               private popoverControlle: PopoverController) {
 
     const config = this.service.currentConfig;
-    this.signInLabel = config.signInLabel;
-    this.signOutLabel = config.signOutLabel;
-    this.signUpLabel = config.signUpLabel;
-    this.viewProfileLabel = config.viewProfileLabel;
-
+    this.signInLabel = config.stringResources.signIn;
+    this.signOutLabel = config.stringResources.signOut;
+    this.signUpLabel = config.stringResources.signUp;
+    this.viewProfileLabel = config.stringResources.profile;
   }
 
   public handleMenuLinkClick(link: AvatarMenuLinkItem): void {

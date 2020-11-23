@@ -1,0 +1,15 @@
+<div class="provider-stack-container">
+  <div class="provider-stack">
+    <ion-button
+      *ngFor="let p of visibleProviders()"
+      expand="full"
+      (click)="signIn(p.id)"
+      color="light"
+      size="large"
+    >
+      <ion-icon [name]="p.icon" slot="start"
+      [ngClass]="p.id + '-button'"></ion-icon>
+      {{ p.title }}
+    </ion-button>
+  </div>
+</div>

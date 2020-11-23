@@ -22,6 +22,9 @@
       "firebase/*": [
         "./node_modules/firebase/*"
       ],
+      "@firebase/*": [
+        "./node_modules/@firebase/*"
+      ],
       "@ionic/*": [
         "./node_modules/@ionic/*"
       ],

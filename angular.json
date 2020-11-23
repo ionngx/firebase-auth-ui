@@ -8,12 +8,6 @@
       "root": "projects/ionngx-firebase-auth-ui",
       "sourceRoot": "projects/ionngx-firebase-auth-ui/src",
       "prefix": "ionngx-firebase-auth-ui",
-      "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss",
-          "skipTests": true
-        }
-      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -50,5 +44,11 @@
       }
     }
   },
-  "defaultProject": "ionngx-firebase-auth-ui"
+  "defaultProject": "ionngx-firebase-auth-ui",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss",
+      "skipTests": true
+    }
+  }
 }

@@ -1,18 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { authProviders } from '../data/auth-providers';
-
 import { AuthProviderId } from '../enums';
 import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
-import { AuthProvider } from '../models/auth-provider';
+import { AuthProvider } from '../models';
 
 @Component({
-  selector: 'ionngx-firebase-auth-ui-provider-bar',
-  templateUrl: './provider-bar.component.html',
-  styleUrls: ['./provider-bar.component.scss'],
+  selector: 'ionngx-firebase-auth-ui-provider-stack',
+  templateUrl: './provider-stack.component.html',
+  styleUrls: ['./provider-stack.component.scss']
 })
-export class ProviderBarComponent implements OnInit {
-  @Input()
-  public buttonColor: 'primary' | 'secondary' | 'tertiary' | 'light' | 'medium' | 'dark' | 'success' | 'warning' | 'danger' = "primary";
+export class ProviderStackComponent implements OnInit {
 
   @Input()
   public hideEmailPasswordButton: boolean = true;
@@ -27,7 +24,6 @@ export class ProviderBarComponent implements OnInit {
   public ngOnInit(): void {
     this.prepareProviders(this.service.currentConfig.providers);
   }
-
   public signIn(provider: AuthProviderId): void {
     if (provider === AuthProviderId.EmailAndPassword) {
       this.emailPasswordSelected.emit();
@@ -80,4 +76,5 @@ export class ProviderBarComponent implements OnInit {
       this.providers.push(provider);
     }
   }
+
 }

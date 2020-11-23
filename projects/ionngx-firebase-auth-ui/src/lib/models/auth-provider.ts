@@ -4,4 +4,5 @@ export interface AuthProvider {
   id: AuthProviderId;
   icon: string;
   title: string;
+  provider?: any;
 }

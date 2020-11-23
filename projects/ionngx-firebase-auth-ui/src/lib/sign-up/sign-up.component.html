@@ -1,0 +1,30 @@
+<div class="sign-up-wrapper">
+  <ion-toolbar *ngIf="isModal">
+    <ion-header>
+      <ion-title>{{ signUpLabel }}</ion-title>
+    </ion-header>
+  </ion-toolbar>
+
+  <p>{{ signUpMessage }}</p>
+  <form (ngSubmit)="signUp()">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" placeholder="Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="Password"
+      ></ion-input>
+    </ion-item>
+    <div class="button-bar">
+      <ion-button type="submit">{{ signUpLabel }}</ion-button>
+      <ion-button color="secondary" (click)="cancel()" *ngIf="isModal">{{
+        cancelLabel
+      }}</ion-button>
+    </div>
+  </form>
+</div>

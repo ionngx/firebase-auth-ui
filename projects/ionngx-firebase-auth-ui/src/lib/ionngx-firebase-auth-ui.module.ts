@@ -1,14 +1,14 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FirebaseAppConfig, FIREBASE_APP_NAME, FIREBASE_OPTIONS } from '@angular/fire';
 
-import { NavigatorService } from './navigator.service';
+import { NavigatorService } from './services/navigator.service';
 import { ConfigOverridesToken, ionngxFirebaseAuthUiConfigFactory, IonngxFirebaseAuthUiConfigToken, IonngxFirebaseAuthUiConfig } from './config';
-import { ProviderBarComponent } from './provider-bar/provider-bar.component';
+import { SignInModule } from './sign-in';
 
 @NgModule({
   exports: [],
   declarations: [],
-  imports: [],
+  imports: [SignInModule],
   providers: [NavigatorService]
 })
 export class IonngxFirebaseAuthUiModule {

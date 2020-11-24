@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonicSafeString, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import { IonngxFirebaseAuthUiService } from '../../public-api';
 

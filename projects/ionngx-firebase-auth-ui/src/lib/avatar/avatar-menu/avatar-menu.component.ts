@@ -42,7 +42,7 @@ export class AvatarMenuComponent {
   constructor(private service: IonngxFirebaseAuthUiService,
               private router: Router,
               private navigator: NavigatorService,
-              private popoverControlle: PopoverController) {
+              private popoverController: PopoverController) {
 
     const config = this.service.currentConfig;
     this.signInLabel = config.stringResources.signIn;
@@ -65,23 +65,23 @@ export class AvatarMenuComponent {
   }
 
   public async viewProfile(): Promise<void> {
-    await this.popoverControlle.dismiss();
+    await this.popoverController.dismiss();
     await this.service.viewProfile();
   }
 
   public async signIn(): Promise<void> {
-    await this.popoverControlle.dismiss();
+    await this.popoverController.dismiss();
     await this.service.signIn();
   }
 
   public async signUp(): Promise<void> {
-    await this.popoverControlle.dismiss();
+    await this.popoverController.dismiss();
     await this.service.signUp();
   }
 
   public async signOut(): Promise<void> {
     try {
-      await this.popoverControlle.dismiss();
+      await this.popoverController.dismiss();
       await this.service.signOut();
     } catch (e) {
       console.error('An error happened while signing out!', e);

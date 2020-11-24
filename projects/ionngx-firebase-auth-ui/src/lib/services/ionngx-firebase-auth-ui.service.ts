@@ -2,14 +2,15 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import firebase from 'firebase';
+import { ToastController } from '@ionic/angular';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import { IonngxFirebaseAuthUiConfig, IonngxFirebaseAuthUiConfigToken } from '../config';
 import { authProviders } from '../data/auth-providers';
 import { AuthProviderId } from '../enums';
 import { User } from '../models';
-import { NavigatorService } from './navigator.service';
-import { ToastController } from '@ionic/angular';
+import { ModalService } from './modal.service';
 
 /**
  * Service that handles communication with Firebase Auth via AngularFireAuth
@@ -53,8 +54,8 @@ export class IonngxFirebaseAuthUiService {
     @Inject(IonngxFirebaseAuthUiConfigToken) private config: IonngxFirebaseAuthUiConfig,
     private angularFireAuth: AngularFireAuth,
     private router: Router,
-    private navigatorService: NavigatorService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private modalService: ModalService
   ) {}
 
   /**
@@ -108,7 +109,7 @@ export class IonngxFirebaseAuthUiService {
     if (this.config.signInRoute) {
       this.navigate(this.config.signInRoute);
     } else {
-      return this.navigatorService.showSignInModal();
+      return this.modalService.showSignInModal();
     }
   }
 
@@ -132,7 +133,7 @@ export class IonngxFirebaseAuthUiService {
     if (this.config.signUpRoute) {
       this.navigate(this.config.signUpRoute);
     } else {
-      return this.navigatorService.showSignUpModal();
+      return this.modalService.showSignUpModal();
     }
   }
 

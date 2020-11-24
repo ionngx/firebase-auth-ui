@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build ",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prepublish": "ng build --prod",
+    "publish": "npm publish ./dist/ionngx-firebase-auth-ui --tag beta --access public"
   },
   "private": true,
   "devDependencies": {

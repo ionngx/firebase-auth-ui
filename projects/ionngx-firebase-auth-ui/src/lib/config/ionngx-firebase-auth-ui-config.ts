@@ -90,6 +90,10 @@ export interface IonngxFirebaseAuthUiConfig {
    */
   stringResources?: StringResources;
   /**
+   * Indicates whether
+   */
+  useInvisibleReCaptha?: boolean;
+  /**
    * The route to navigate to when the user initiates view profile
    */
   viewProfileRoute?: string | string[];

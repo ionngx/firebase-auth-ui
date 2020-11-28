@@ -5,6 +5,7 @@ import { User } from '../models';
 import { AvatarMenuLinkItem } from './avatar-menu-link-item';
 import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
 import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
+import { DisplayNameLocation } from '../enums/display-name-location';
 
 
 @Component({
@@ -33,6 +34,12 @@ export class AvatarComponent implements OnInit {
 
   @Input()
   public mode: 'default' | 'simple' = 'default';
+
+  @Input()
+  public showDisplayName = false;
+
+  @Input()
+  public displayNameLocation: DisplayNameLocation = DisplayNameLocation.Left;
 
   public user: User;
 

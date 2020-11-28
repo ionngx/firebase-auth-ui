@@ -1,0 +1,18 @@
+<div class="phone-number-input">
+  <ion-button
+    *ngIf="selectedItem"
+    fill="clear"
+    size="small"
+    [ngClass]="'flag-icon flag-icon-background flag-icon-' + selectedItem.countryCode.toLowerCase()"
+    (click)="showPopup($event)"
+  >
+  </ion-button>
+  <ion-input
+    type="text" inputmode="tel"
+    [(ngModel)]="value"
+    name="phoneNumber"
+    [placeholder]="label"
+    (ionChange)="handleInputChanged($event)"
+    [debounce]="500"
+  ></ion-input>
+</div>

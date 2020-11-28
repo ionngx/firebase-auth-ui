@@ -6,3 +6,26 @@ ion-img {
   height: 40px;
   width: 40px;
 }
+
+.avatar-container {
+  display: inline-flex;
+  align-items: center;
+
+  &.display-name-left {
+    flex-direction: row-reverse;
+  }
+
+  &.display-name-right {
+    flex-direction: row;
+  }
+
+  &.display-name-above {
+    flex-direction: column-reverse;
+    justify-content: center;
+  }
+
+  &.display-name-below {
+    flex-direction: column;
+    justify-content: center;
+  }
+}

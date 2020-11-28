@@ -19,7 +19,12 @@ export const defaultConfig: IonngxFirebaseAuthUiConfig = {
   stringResources: {
     cancel: 'Cancel',
     email: 'Email',
+    phoneNumberSignIn: 'Enter Phone Number',
+    enterPhoneNumberMesssage: 'Enter the phone number we should send an SMS message to',
+    enterVerificationCodeMessage: 'Enter Verification Code',
     password: 'Password',
+    phoneNumber: 'Phone Number',
+    profile: 'Profile',
     signIn: 'Sign In',
     signInFailureMessage: 'An unexpected error occured, unable to sign you in.',
     signInMessage:
@@ -31,6 +36,8 @@ export const defaultConfig: IonngxFirebaseAuthUiConfig = {
     signUpMessage:
       'Complete and submit the form below to create an account.',
     signUpSuccessMessage: 'Your account was successfully created.',
-    profile: 'Profile',
+    submit: 'Submit',
+    verificationCode: 'Verification Code'
   },
+  useInvisibleReCaptha: false
 };

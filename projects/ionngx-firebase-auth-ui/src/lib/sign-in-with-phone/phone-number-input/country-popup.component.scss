@@ -1,0 +1,10 @@
+@import '../../../../../../node_modules/flag-icon-css/sass/flag-icon.scss';
+.country-popup {
+  overflow-x: hidden;
+  .flag-icon {
+    width: 32px;
+    height: 24px;
+    background-size: cover;
+    margin-right: 1em;
+  }
+}

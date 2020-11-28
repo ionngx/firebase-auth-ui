@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ToastController } from '@ionic/angular';
 import firebase from 'firebase/app';
@@ -22,6 +22,12 @@ export class IonngxFirebaseAuthUiService {
   private signInCompletedSubject: Subject<firebase.auth.UserCredential | null> = new Subject<firebase.auth.UserCredential | null>();
   private signUpCompletedSubject: Subject<firebase.auth.UserCredential | null> = new Subject<firebase.auth.UserCredential | null>();
   private signedOutSubject: Subject<void> = new Subject<void>();
+  private isSignedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  /**
+   * Indicates if the user is currently signed in and updates when they sign out or in
+   */
+  public isSignedIn$: Observable<boolean> = this.isSignedInSubject.asObservable();
 
   /**
    * Provides notifications that the sign in process has completed
@@ -56,7 +62,9 @@ export class IonngxFirebaseAuthUiService {
     private router: Router,
     private toastController: ToastController,
     private modalService: ModalService
-  ) {}
+  ) {
+    this.angularFireAuth.user.subscribe((u) => this.isSignedInSubject.next(u && !u.isAnonymous));
+  }
 
   /**
    * Processes a sign in request
@@ -80,9 +88,8 @@ export class IonngxFirebaseAuthUiService {
           result = await this.angularFireAuth.signInWithEmailAndPassword(email, password);
           break;
         case AuthProviderId.PhoneNumber:
-          // signInResult = await this.angularFireAuth.signInWithPhoneNumber()
-          //TODO: Complete phone sign in
-          break;
+          await this.modalService.showSignInWithPhone();
+          return;
         default:
           result = await this.angularFireAuth.signInWithPopup(provider.provider);
           break;
@@ -93,6 +100,11 @@ export class IonngxFirebaseAuthUiService {
     }
   }
 
+  /**
+   * Processes sign up with email and password
+   * @param email Email address
+   * @param password Password
+   */
   public async processSignUp(email: string, password: string): Promise<void> {
     try {
       const result = await this.angularFireAuth.createUserWithEmailAndPassword(email, password);
@@ -111,6 +123,16 @@ export class IonngxFirebaseAuthUiService {
     } else {
       return this.modalService.showSignInModal();
     }
+  }
+
+  /**
+   *  Initiates signing in with phone number
+   */
+  public signInWithPhoneNumber(
+    phoneNumber: string,
+    recaptchaVerifier: firebase.auth.RecaptchaVerifier
+  ): Promise<firebase.auth.ConfirmationResult> {
+    return this.angularFireAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
   }
 
   /**
@@ -137,6 +159,15 @@ export class IonngxFirebaseAuthUiService {
     }
   }
 
+  public async completePhoneSignIn(confirmationResult: firebase.auth.ConfirmationResult, verificationCode: string): Promise<void> {
+    try {
+      const result = await confirmationResult.confirm(verificationCode);
+      return this.handleSignInSuccess(result);
+    } catch (err) {
+      return this.handleSignInError(err);
+    }
+  }
+
   /**
    * Navigates to configured view profile route if configured, otherwise shows profile in modal
    */
@@ -159,11 +190,11 @@ export class IonngxFirebaseAuthUiService {
 
   private async handleSignInSuccess(userCredential: firebase.auth.UserCredential): Promise<void> {
     this.signInCompletedSubject.next(userCredential);
-    if(typeof this.currentConfig.signInSuccessCallback === 'function') {
+    if (typeof this.currentConfig.signInSuccessCallback === 'function') {
       this.currentConfig.signInSuccessCallback(userCredential);
     }
 
-    if(this.currentConfig.signInSuccessRoute) {
+    if (this.currentConfig.signInSuccessRoute) {
       this.navigate(this.currentConfig.signInSuccessRoute);
     }
 
@@ -177,11 +208,11 @@ export class IonngxFirebaseAuthUiService {
 
   private async handleSignUpSuccess(userCredential: firebase.auth.UserCredential): Promise<void> {
     this.signUpCompletedSubject.next(userCredential);
-    if(typeof this.currentConfig.signUpSuccessCallback === 'function') {
+    if (typeof this.currentConfig.signUpSuccessCallback === 'function') {
       this.currentConfig.signUpSuccessCallback(userCredential);
     }
 
-    if(this.currentConfig.signUpSuccessRoute) {
+    if (this.currentConfig.signUpSuccessRoute) {
       this.navigate(this.currentConfig.signUpSuccessRoute);
     }
     return this.showSuccessToast(this.config.stringResources.signInSuccessMessage);

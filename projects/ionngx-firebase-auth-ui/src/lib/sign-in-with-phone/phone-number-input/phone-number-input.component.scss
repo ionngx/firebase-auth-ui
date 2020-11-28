@@ -1,0 +1,21 @@
+@import '../../../../../../node_modules/flag-icon-css/sass/flag-icon.scss';
+
+.phone-number-input {
+  display: inline-flex;
+  align-items: center;
+
+  .flag-icon {
+    width: 32px;
+    height: 24px;
+    background-size: cover;
+  }
+
+  .button-small {
+    padding: 0;
+  }
+
+  ion-popover {
+    max-height: 400px;
+    width: 350px;
+  }
+}

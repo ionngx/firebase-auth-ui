@@ -1,0 +1,7 @@
+<div class="country-popup">
+  <ion-list>
+    <ion-item *ngFor="let item of data" button="true" (click)="selectItem(item)">
+      <div class="flag-icon flag-icon-background" [ngClass]="'flag-icon-' + item.countryCode.toLowerCase()"></div> {{ item.name }}
+    </ion-item>
+  </ion-list>
+</div>

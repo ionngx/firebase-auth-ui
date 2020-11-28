@@ -31,6 +31,9 @@
       "ionngx-firebase-auth-ui": [
         "dist/ionngx-firebase-auth-ui/ionngx-firebase-auth-ui",
         "dist/ionngx-firebase-auth-ui"
+      ],
+      "font-icon-css": [
+        "./node_modules/font-icon-css"
       ]
     }
   }

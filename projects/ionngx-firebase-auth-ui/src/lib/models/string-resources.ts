@@ -14,10 +14,29 @@ export interface StringResources {
    */
   email?: string;
   /**
+   * Used as the message on the sign in with phone number component
+   * @default 'Enter the phone number we should send an SMS message to'
+   */
+  enterPhoneNumberMesssage?: string;
+  /**
+   * Used for heading when user is prompted for verification code
+   * @default 'Enter Verification Code'
+   */
+  enterVerificationCodeMessage?: string;
+  /**
    * Used for labels or placeholders where a password is entered
    * @default 'Password'
    */
   password?: string;
+  /**
+   * Used for labels and placeholders for phone number fields
+   */
+  phoneNumber?: string;
+  /**
+   * Used for heading when user is prompted for phone number authentication
+   * @default 'Phone Number Sign Im'
+   */
+  phoneNumberSignIn?: string;
   /**
    * Used for labels on buttons the user can view their profile
    * @default 'Profile'
@@ -68,4 +87,12 @@ export interface StringResources {
    * @default 'Your account was successfully created.'
    */
   signUpSuccessMessage?: string;
+  /**
+   * Used for submit buttons
+   */
+  submit?: string;
+  /**
+   * Used as label for verification code field
+   */
+  verificationCode?: string;
 }

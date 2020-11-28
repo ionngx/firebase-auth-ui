@@ -24,8 +24,8 @@ export class SignUpComponent implements OnInit {
   public signUpMessage: string;
   public signUpLabel: string;
 
-  public email: string;
-  public password: string;
+  public newEmail: string;
+  public newPassword: string;
 
   constructor(
     private service: IonngxFirebaseAuthUiService,
@@ -50,8 +50,8 @@ export class SignUpComponent implements OnInit {
   }
 
   public async signUp(): Promise<void> {
-    await this.service.processSignUp(this.email,
-      this.password
+    await this.service.processSignUp(this.newEmail,
+      this.newPassword
     );
     if (this.isModal) {
       await this.modalController.dismiss();

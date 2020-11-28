@@ -24,6 +24,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   public cancelLabel: string;
   public signInMessage: string;
   public signInLabel: string;
+  public emailLabel: string;
+  public passwordLabel: string;
 
   public email: string;
   public password: string;
@@ -31,7 +33,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   constructor(
     private service: IonngxFirebaseAuthUiService,
     private modalController: ModalController
-  ) {}
+  ) {
+  }
 
   public ngOnDestroy(): void {
     for (const subscription of this.subscriptions) {
@@ -42,6 +45,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const stringResources = this.service.currentConfig.stringResources;
     this.cancelLabel = stringResources.cancel;
+    this.emailLabel = stringResources.email;
+    this.passwordLabel = stringResources.password;
     this.signInMessage = stringResources.signInMessage;
     this.signInLabel = stringResources.signIn;
 

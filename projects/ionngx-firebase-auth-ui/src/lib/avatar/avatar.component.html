@@ -1,6 +1,19 @@
-<ion-fab-button *ngIf="!hideWhenAnonymous && !user" [disabled]="!enableInteraction()" (click)="showMenu($event)" size='small'>
-    <ion-icon ios='person-circle-outline' md='person-circle-sharp'></ion-icon>
-</ion-fab-button>
-<ion-fab-button *ngIf="user" [disabled]="!enableInteraction()" (click)="showMenu($event)" size='small'>
-    <ion-img [src]='user.photoURL'></ion-img>
-</ion-fab-button>
+<div class="avatar-container" [ngClass]="'display-name-' + displayNameLocation">
+  <ion-fab-button
+    *ngIf="!hideWhenAnonymous && !user"
+    [disabled]="!enableInteraction()"
+    (click)="showMenu($event)"
+    size="small"
+  >
+    <ion-icon ios="person-circle-outline" md="person-circle-sharp"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button
+    *ngIf="user"
+    [disabled]="!enableInteraction()"
+    (click)="showMenu($event)"
+    size="small"
+  >
+    <ion-img [src]="user.photoURL"></ion-img>
+  </ion-fab-button>
+  <h3 *ngIf="user && showDisplayName">{{ user.displayName }}</h3>
+</div>

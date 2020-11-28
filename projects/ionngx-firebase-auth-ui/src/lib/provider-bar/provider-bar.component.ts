@@ -50,6 +50,7 @@ export class ProviderBarComponent implements OnInit {
         this.addProviderById(providers);
       }
     } else {
+      console.table(providers);
       for (const providerId of providers) {
         if (
           providerId === AuthProviderId.ALL ||
@@ -58,6 +59,7 @@ export class ProviderBarComponent implements OnInit {
         ) {
           continue;
         }
+        this.addProviderById(providerId);
       }
     }
   }

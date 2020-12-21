@@ -47,7 +47,10 @@
   "defaultProject": "ionngx-firebase-auth-ui",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss",
+      "style": "scss",
+      "skipTests": true
+    },
+    "@schematics/angular:service": {
       "skipTests": true
     }
   }

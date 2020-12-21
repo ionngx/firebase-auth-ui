@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 import { LocationService } from '../../services/location.service';
@@ -10,6 +10,7 @@ import { dialCodes } from './dial-codes';
   selector: 'ionngx-firebase-auth-ui-phone-number-input',
   templateUrl: './phone-number-input.component.html',
   styleUrls: ['./phone-number-input.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PhoneNumberInputComponent implements OnInit {
   @Input()

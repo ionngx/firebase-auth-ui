@@ -9,10 +9,25 @@ export interface StringResources {
    */
   cancel?: string;
   /**
+   * Used for labels or placeholder for display name fields
+   * @default 'Display Name'
+   */
+  displayName?: string;
+  /**
    * Used for labels where the email address is entered
    * @default 'Email'
    */
   email?: string;
+  /**
+   * Used as title for user avatar when email verification is pending
+   * @default 'Email verification is not complete'
+   */
+  emailVerifiationPending?: string;
+  /**
+   * Used for heading when user is prompted for phone number authentication
+   * @default 'Phone Number Sign Im'
+   */
+  enterPhoneNumber?: string;
   /**
    * Used as the message on the sign in with phone number component
    * @default 'Enter the phone number we should send an SMS message to'
@@ -24,19 +39,25 @@ export interface StringResources {
    */
   enterVerificationCodeMessage?: string;
   /**
+   * Used for labels and status message when user not signed in
+   * @default 'Not signed in'
+   */
+  notSignedIn?: string;
+  /**
    * Used for labels or placeholders where a password is entered
    * @default 'Password'
    */
   password?: string;
   /**
    * Used for labels and placeholders for phone number fields
+   * @default 'Phone Number'
    */
   phoneNumber?: string;
   /**
-   * Used for heading when user is prompted for phone number authentication
-   * @default 'Phone Number Sign Im'
+   * Used for labels and placehoder for photo url fields
+   * @default 'Photo URL'
    */
-  phoneNumberSignIn?: string;
+  photoUrl?: string;
   /**
    * Used for labels on buttons the user can view their profile
    * @default 'Profile'
@@ -49,7 +70,7 @@ export interface StringResources {
   signIn?: string;
   /**
    * Used for the toast message when authentication fails
-   * @default 'An unexpected error occured, unable to sign you in.'
+   * @default 'An unexpected error occurred, unable to sign you in.'
    */
   signInFailureMessage?: string;
   /**
@@ -68,13 +89,22 @@ export interface StringResources {
    */
   signOut?: string;
   /**
+   * Used for the toast message when sign out fails
+   */
+  signOutFailureMessage?: string;
+  /**
+   * Use for the toast message when suer successfully signs out
+   * @default 'An unexpected error occurred, unable to create an account.'
+   */
+  signOutSuccessMessage?: string;
+  /**
    * Used for labels and headings for the sign up feature
    * @default 'Sign Out'
    */
   signUp?: string;
   /**
    * Used for the toast message when authentication fails
-   * @default 'An unexpected error occured, unable to sign you in.'
+   * @default 'An unexpected error occurred, unable to sign you in.'
    */
   signUpFailureMessage?: string;
   /**
@@ -88,11 +118,33 @@ export interface StringResources {
    */
   signUpSuccessMessage?: string;
   /**
-   * Used for submit buttons
+   * Used for submit buttons   *
+   * @default 'Submit'
    */
   submit?: string;
   /**
+   * Used for the toast message when a user profile update fails
+   * @default 'An unexpected error occurred, unable to update your profile.'
+   */
+  updateProfileFailureMessage?: string,
+  /**
+   * Used for the toast message when the user profile was successfully updated
+   * @default 'Your profile was successfully updated'
+   */
+  updateProfileSuccessMessage?: string,
+  /**
+   * Used for the labels and headings for the user profile feature
+   * @default 'User Profile'
+   */
+  userProfile?: string;
+  /**
+   * Uses as the message on the user profile component
+   * @default 'Change your basic User Profile settings using the buttons adjacent to the appropriate field.'
+   */
+  userProfileMessage?: string;
+  /**
    * Used as label for verification code field
+   * @default 'Verification Code'
    */
   verificationCode?: string;
 }

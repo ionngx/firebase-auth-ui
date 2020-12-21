@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -12,6 +12,9 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./sign-in-with-phone.component.scss']
 })
 export class SignInWithPhoneComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @Input()
+  public isModal: boolean = false;
 
   private subscriptions: Subscription[] = [];
   private recaptchaVerifier: firebase.auth.RecaptchaVerifier;
@@ -55,7 +58,7 @@ export class SignInWithPhoneComponent implements OnInit, AfterViewInit, OnDestro
     this.cancelLabel = stringResources.cancel;
     this.enterPhoneNumberMessage = stringResources.enterPhoneNumberMesssage;
     this.enterVerificationCodeMessage = stringResources.enterVerificationCodeMessage;
-    this.phoneNumberSignIn = stringResources.phoneNumberSignIn;
+    this.phoneNumberSignIn = stringResources.enterPhoneNumber;
     this.phoneNumberLabel = stringResources.phoneNumber;
     this.submitLabel = stringResources.submit;
     this.verificationCodeLabel = stringResources.verificationCode;

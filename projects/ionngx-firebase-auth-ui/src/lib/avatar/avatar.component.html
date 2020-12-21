@@ -1,4 +1,4 @@
-<div class="avatar-container" [ngClass]="'display-name-' + displayNameLocation">
+<div class="avatar-container" [ngClass]="'display-name-' + displayNameLocation" [title]="statusMessage">
   <ion-fab-button
     *ngIf="!hideWhenAnonymous && !user"
     [disabled]="!enableInteraction()"
@@ -8,12 +8,13 @@
     <ion-icon ios="person-circle-outline" md="person-circle-sharp"></ion-icon>
   </ion-fab-button>
   <ion-fab-button
-    *ngIf="user"
+    *ngIf="user && isVerified"
     [disabled]="!enableInteraction()"
     (click)="showMenu($event)"
     size="small"
   >
     <ion-img [src]="user.photoURL"></ion-img>
   </ion-fab-button>
+  <ion-icon ios="timer-outline" md="timer-sharp" color="warning" *ngIf="user && !isVerified"></ion-icon>
   <h3 *ngIf="user && showDisplayName">{{ user.displayName }}</h3>
 </div>

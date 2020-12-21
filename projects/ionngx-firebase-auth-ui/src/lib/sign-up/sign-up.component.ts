@@ -12,25 +12,27 @@ import { IonngxFirebaseAuthUiService } from '../../public-api';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-
-
+  private subscriptions: Subscription[] = [];
 
   @Input()
   public isModal: boolean = false;
 
-  private subscriptions: Subscription[] = [];
-
   public cancelLabel: string;
-  public signUpMessage: string;
-  public signUpLabel: string;
-
+  public emailLabel: string;
+  public passwordLabel: string;
   public newEmail: string;
   public newPassword: string;
+  public signUpLabel: string;
+  public signUpMessage: string;
 
   constructor(
     private service: IonngxFirebaseAuthUiService,
     private modalController: ModalController
   ) {}
+
+  public async cancel(): Promise<boolean> {
+    return await this.modalController.dismiss();
+  }
 
   public ngOnDestroy(): void {
     for (const subscription of this.subscriptions) {
@@ -41,6 +43,8 @@ export class SignUpComponent implements OnInit {
   public ngOnInit(): void {
     const stringResources = this.service.currentConfig.stringResources;
     this.cancelLabel = stringResources.cancel;
+    this.emailLabel = stringResources.email;
+    this.passwordLabel = stringResources.password;
     this.signUpMessage = stringResources.signUpMessage;
     this.signUpLabel = stringResources.signUp;
 
@@ -50,7 +54,7 @@ export class SignUpComponent implements OnInit {
   }
 
   public async signUp(): Promise<void> {
-    await this.service.processSignUp(this.newEmail,
+    await this.service.signUp(this.newEmail,
       this.newPassword
     );
     if (this.isModal) {
@@ -58,12 +62,7 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  public async cancel(): Promise<boolean> {
-    return await this.modalController.dismiss();
-  }
-
   private handleSignUpCompleted = (userCredential: firebase.auth.UserCredential): void => {
     this.modalController.dismiss();
   }
-
 }

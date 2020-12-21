@@ -13,7 +13,6 @@ import {
   IonngxFirebaseAuthUiConfigToken,
   IonngxFirebaseAuthUiConfig,
 } from './config';
-import { ModalService } from './services/modal.service';
 import { AvatarComponent } from './avatar/avatar.component';
 import { AvatarMenuComponent } from './avatar/avatar-menu/avatar-menu.component';
 import { ProviderBarComponent } from './provider-bar/provider-bar.component';
@@ -23,6 +22,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignInWithPhoneComponent } from './sign-in-with-phone/sign-in-with-phone.component';
 import { PhoneNumberInputComponent } from './sign-in-with-phone/phone-number-input/phone-number-input.component';
 import { CountryPopupComponent } from './sign-in-with-phone/phone-number-input';
+import { ProviderService } from './services/provider.service';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const COMPONENTS = [
   AvatarComponent,
@@ -33,13 +34,14 @@ const COMPONENTS = [
   SignUpComponent,
   SignInWithPhoneComponent,
   PhoneNumberInputComponent,
-  CountryPopupComponent
+  CountryPopupComponent,
+  UserProfileComponent,
 ];
 @NgModule({
   declarations: COMPONENTS,
   exports: COMPONENTS,
   imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
-  providers: [NavigatorService, ModalService, LocationService],
+  providers: [NavigatorService, LocationService, ProviderService],
 })
 export class IonngxFirebaseAuthUiModule {
   public static forRoot(

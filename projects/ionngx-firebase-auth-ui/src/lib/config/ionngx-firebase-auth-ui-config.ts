@@ -50,7 +50,7 @@ export interface IonngxFirebaseAuthUiConfig {
    * authentication is successful
    */
   showToastMessageOnSuccess?: boolean;
-  /**
+    /**
    * The route to navigate to when the user initiates sign in,
    * allows developers to create a custom user interface
    */
@@ -64,14 +64,23 @@ export interface IonngxFirebaseAuthUiConfig {
    */
   signInSuccessRoute?: string | string[];
   /**
+   * The route to navigate to when the user initiates sign in with phone number,
+   * allows developers to create a custom user interface
+   */
+  signInWithPhoneNumberRoute?: string | string[];
+  /**
    * A function to call when the user signs out
    */
-  signOutCallback?: () => void;
+  signOutSuccessCallback?: () => void;
   /**
    * A route to navigtae to when the user initiates sign out,
    * allows developers to create a custom user interface
    */
   signOutRoute?: string | string[];
+  /**
+   * A route to navigate to when the user successfully completes sign out
+   */
+  signOutSuccessRoute?: string | string[];
   /**
    * A route to navigate to when the user initiates sign up
    * allows developers to create a custom user interface
@@ -93,6 +102,12 @@ export interface IonngxFirebaseAuthUiConfig {
    * Indicates whether
    */
   useInvisibleReCaptha?: boolean;
+
+  /**
+   * A function to call when an update to the user profile completes successfully
+   */
+  updateProfileCallback?: (user: firebase.User) => void;
+
   /**
    * The route to navigate to when the user initiates view profile
    */

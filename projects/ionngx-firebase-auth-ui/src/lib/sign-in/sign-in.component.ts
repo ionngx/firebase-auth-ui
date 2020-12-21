@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-import { AuthProviderId } from '../enums';
 import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
 
 @Component({
@@ -56,8 +55,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   public async signIn(): Promise<void> {
-    await this.service.processSignIn(
-      AuthProviderId.EmailAndPassword,
+    await this.service.signInWithEmailAndPassword(
       this.email,
       this.password
     );

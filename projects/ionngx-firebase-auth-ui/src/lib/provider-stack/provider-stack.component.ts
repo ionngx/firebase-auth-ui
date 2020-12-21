@@ -1,80 +1,77 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { authProviders } from '../data/auth-providers';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { AuthProviderId } from '../enums';
 import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
 import { AuthProvider } from '../models';
+import { IonngxFirebaseAuthUiConfig, IonngxFirebaseAuthUiConfigToken } from '../config';
+import { NavigatorService } from '../services/navigator.service';
+import { ProviderService } from '../services/provider.service';
 
 @Component({
   selector: 'ionngx-firebase-auth-ui-provider-stack',
   templateUrl: './provider-stack.component.html',
-  styleUrls: ['./provider-stack.component.scss']
+  styleUrls: ['./provider-stack.component.scss'],
 })
-export class ProviderStackComponent implements OnInit {
-
+export class ProviderStackComponent implements OnChanges {
   @Input()
   public hideEmailPasswordButton: boolean = true;
 
   @Output()
   public emailPasswordSelected: EventEmitter<void> = new EventEmitter<void>();
 
+  @Output()
+  public phoneSelected: EventEmitter<void> = new EventEmitter<void>();
+
   public providers: AuthProvider[] = [];
 
-  constructor(private service: IonngxFirebaseAuthUiService) {}
+  constructor(
+    @Inject(IonngxFirebaseAuthUiConfigToken) private config: IonngxFirebaseAuthUiConfig,
+    private navigatorService: NavigatorService,
+    private service: IonngxFirebaseAuthUiService,
+    private providerService: ProviderService
+  ) {}
 
-  public ngOnInit(): void {
-    this.prepareProviders(this.service.currentConfig.providers);
-  }
-  public signIn(provider: AuthProviderId): void {
-    if (provider === AuthProviderId.EmailAndPassword) {
-      this.emailPasswordSelected.emit();
-      return;
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hideEmailPasswordButton) {
+      this.providers = this.providerService.prepareProviders(
+        this.config.providers,
+        this.hideEmailPasswordButton
+      );
     }
-    this.service.processSignIn(provider);
+  }
+
+  public async signIn(provider: AuthProviderId): Promise<void> {
+    if (provider === AuthProviderId.EmailAndPassword) {
+      if (this.emailPasswordSelected.observers && this.emailPasswordSelected.observers.length) {
+        this.emailPasswordSelected.emit();
+        return Promise.resolve();
+      } else {
+        return this.navigatorService.signIn();
+      }
+    }
+
+    if (provider === AuthProviderId.PhoneNumber) {
+      if (this.phoneSelected.observers && this.phoneSelected.observers.length) {
+        this.phoneSelected.emit();
+        return Promise.resolve();
+      } else {
+        return this.navigatorService.signInWithPhoneNumber();
+      }
+    }
+
+    return this.service.signIn(provider);
   }
 
   public visibleProviders(): AuthProvider[] {
-    return this.providers.filter((p: AuthProvider) => p.id !== AuthProviderId.EmailAndPassword || !this.hideEmailPasswordButton);
+    return this.providers.filter(
+      (p: AuthProvider) => p.id !== AuthProviderId.EmailAndPassword || !this.hideEmailPasswordButton
+    );
   }
-
-  private prepareProviders(providers: AuthProviderId | AuthProviderId[]): void {
-    if (!Array.isArray(providers)) {
-      if (providers === AuthProviderId.ALL) {
-        this.prepareAllProviders();
-      }
-
-      if (providers !== AuthProviderId.Anonymous) {
-        this.addProviderById(providers);
-      }
-    } else {
-      for (const providerId of providers) {
-        if (
-          providerId === AuthProviderId.ALL ||
-          providerId === AuthProviderId.Anonymous ||
-          (providerId === AuthProviderId.EmailAndPassword && this.hideEmailPasswordButton)
-        ) {
-          continue;
-        }
-      }
-    }
-  }
-
-  private prepareAllProviders(): void {
-    this.addProviderById(AuthProviderId.Apple);
-    this.addProviderById(AuthProviderId.EmailAndPassword);
-    this.addProviderById(AuthProviderId.Facebook);
-    this.addProviderById(AuthProviderId.Github);
-    this.addProviderById(AuthProviderId.Google);
-    this.addProviderById(AuthProviderId.Microsoft);
-    this.addProviderById(AuthProviderId.PhoneNumber);
-    this.addProviderById(AuthProviderId.Twitter);
-    this.addProviderById(AuthProviderId.Yahoo);
-  }
-
-  private addProviderById(id: AuthProviderId): void {
-    const provider = authProviders.find((v: AuthProvider) => v.id === id);
-    if (provider) {
-      this.providers.push(provider);
-    }
-  }
-
 }

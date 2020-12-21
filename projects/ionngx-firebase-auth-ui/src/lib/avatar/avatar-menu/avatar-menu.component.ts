@@ -1,16 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import firebase from 'firebase/app';
 
-import { IonngxFirebaseAuthUiService } from '../../services/ionngx-firebase-auth-ui.service';
-import { User } from '../../models';
 import { NavigatorService } from '../../services/navigator.service';
 import { AvatarMenuLinkItem } from '../avatar-menu-link-item';
+import { IonngxFirebaseAuthUiConfig, IonngxFirebaseAuthUiConfigToken } from '../../config';
+import { AuthProvider } from '../../models';
+import { AuthProviderId } from '../../enums';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'ionngx-firebase-auth-ui-avatar-menu',
   templateUrl: './avatar-menu.component.html',
-  styleUrls: ['./avatar-menu.component.scss']
+  styleUrls: ['./avatar-menu.component.scss'],
 })
 export class AvatarMenuComponent {
   @Input()
@@ -29,7 +32,10 @@ export class AvatarMenuComponent {
   public canViewProfile = true;
 
   @Input()
-  public user: User;
+  public user: firebase.User;
+
+  @Input()
+  public authProvider: AuthProvider;
 
   public signInLabel = 'Sign In';
 
@@ -39,16 +45,25 @@ export class AvatarMenuComponent {
 
   public viewProfileLabel = 'Profile';
 
-  constructor(private service: IonngxFirebaseAuthUiService,
-              private router: Router,
-              private navigator: NavigatorService,
-              private popoverController: PopoverController) {
+  public get displayName(): string {
+    if(this.authProvider.id !== AuthProviderId.PhoneNumber) {
+      return this.user.displayName;
+    }
 
-    const config = this.service.currentConfig;
-    this.signInLabel = config.stringResources.signIn;
-    this.signOutLabel = config.stringResources.signOut;
-    this.signUpLabel = config.stringResources.signUp;
-    this.viewProfileLabel = config.stringResources.profile;
+    return `TEL: ...${this.user.phoneNumber.substr(this.user.phoneNumber.length - 5, 4)}`;
+  }
+
+  constructor(
+    @Inject(IonngxFirebaseAuthUiConfigToken) private config: IonngxFirebaseAuthUiConfig,
+    private router: Router,
+    private navigatorService: NavigatorService,
+    private popoverController: PopoverController
+  ) {
+    const stringResources = this.config.stringResources;
+    this.signInLabel = stringResources.signIn;
+    this.signOutLabel = stringResources.signOut;
+    this.signUpLabel = stringResources.signUp;
+    this.viewProfileLabel = stringResources.profile;
   }
 
   public handleMenuLinkClick(link: AvatarMenuLinkItem): void {
@@ -56,7 +71,7 @@ export class AvatarMenuComponent {
       const route = Array.isArray(link.routerLink) ? link.routerLink : [link.routerLink];
       this.router.navigate(route);
     } else if (link.externalUrl) {
-      this.navigator.navigateToExternalUrl(link.externalUrl);
+      this.navigatorService.navigateToExternalUrl(link.externalUrl);
     }
 
     if (link.callback) {
@@ -64,27 +79,23 @@ export class AvatarMenuComponent {
     }
   }
 
-  public async viewProfile(): Promise<void> {
-    await this.popoverController.dismiss();
-    await this.service.viewProfile();
+  public viewProfile(): Promise<void> {
+    this.popoverController.dismiss();
+    return this.navigatorService.viewProfile();
   }
 
-  public async signIn(): Promise<void> {
-    await this.popoverController.dismiss();
-    await this.service.signIn();
+  public signIn(): Promise<void> {
+    this.popoverController.dismiss();
+    return this.navigatorService.signIn();
   }
 
-  public async signUp(): Promise<void> {
-    await this.popoverController.dismiss();
-    await this.service.signUp();
+  public signUp(): Promise<void> {
+    this.popoverController.dismiss();
+    return this.navigatorService.signUp();
   }
 
-  public async signOut(): Promise<void> {
-    try {
-      await this.popoverController.dismiss();
-      await this.service.signOut();
-    } catch (e) {
-      console.error('An error happened while signing out!', e);
-    }
+  public signOut(): Promise<void> {
+    this.popoverController.dismiss();
+    return this.navigatorService.signOut();
   }
 }

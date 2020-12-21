@@ -1,17 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import firebase from 'firebase/app';
 
-import { User } from '../models';
 import { AvatarMenuLinkItem } from './avatar-menu-link-item';
 import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
 import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
 import { DisplayNameLocation } from '../enums/display-name-location';
-
+import { IonngxFirebaseAuthUiConfig, IonngxFirebaseAuthUiConfigToken } from '../config';
+import { authProviders } from '../data/auth-providers';
+import { AuthProvider } from '../models';
+import { AuthProviderId } from '../enums';
 
 @Component({
   selector: 'ionngx-firebase-auth-ui-avatar',
   templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss']
+  styleUrls: ['./avatar.component.scss'],
 })
 export class AvatarComponent implements OnInit {
   @Input()
@@ -41,9 +44,34 @@ export class AvatarComponent implements OnInit {
   @Input()
   public displayNameLocation: DisplayNameLocation = DisplayNameLocation.Left;
 
-  public user: User;
+  public authProvider: AuthProvider;
+  public user: firebase.User;
+  public isVerified: boolean;
 
-  constructor(private service: IonngxFirebaseAuthUiService, private popoverController: PopoverController) { }
+  public verificationPending = 'Email verification is not complete';
+  public notSignedIn = 'Not signed in';
+
+  public get statusMessage(): string {
+    if(!this.user || this.user.isAnonymous) {
+      return this.notSignedIn;
+    }
+
+    if(this.user && !this.user.emailVerified) {
+      return this.verificationPending;
+    }
+
+    return ' ';
+  }
+
+  constructor(
+    @Inject(IonngxFirebaseAuthUiConfigToken) private config: IonngxFirebaseAuthUiConfig,
+    private service: IonngxFirebaseAuthUiService,
+    private popoverController: PopoverController
+  ) {
+    const stringResources = this.config.stringResources;
+    this.verificationPending = stringResources.emailVerifiationPending;
+    this.notSignedIn = stringResources.notSignedIn;
+  }
 
   public enableInteraction(): boolean {
     return (
@@ -55,9 +83,7 @@ export class AvatarComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.service.user$.subscribe((user: User) => {
-      this.user = user;
-    });
+    this.service.user$.subscribe(this.handleUserStateChange);
   }
 
   public async showMenu(evt: any): Promise<void> {
@@ -65,14 +91,31 @@ export class AvatarComponent implements OnInit {
       component: AvatarMenuComponent,
       componentProps: {
         additionalLinks: this.additionalLinks,
-        canSignIn: this.canSignIn,
-        canSignOut: this.canSignOut,
-        canViewProfile: this.canViewProfile,
-        user: this.user
+        authProvider: this.authProvider,
+        canSignIn: Boolean(this.canSignIn),
+        canSignOut: Boolean(this.canSignOut),
+        canViewProfile: Boolean(this.canViewProfile),
+        user: this.user,
       },
-      event: evt
+      event: evt,
     });
 
     return await popover.present();
+  }
+
+  private handleUserStateChange = (user: firebase.User) => {
+    this.user = user;
+    if(!this.user) {
+      this.authProvider = undefined;
+      this.isVerified = false;
+      return;
+    }
+    if(this.user.phoneNumber && !this.user.email) {
+      this.authProvider = authProviders.find(p => p.id === AuthProviderId.PhoneNumber);
+      this.isVerified = true;
+    } else {
+      this.authProvider = authProviders.find(p => p.id === this.user.providerId);
+      this.isVerified = user.emailVerified;
+    }
   }
 }

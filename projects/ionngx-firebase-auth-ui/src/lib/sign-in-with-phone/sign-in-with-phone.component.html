@@ -1,4 +1,4 @@
-<ion-toolbar>
+<ion-toolbar *ngIf="isModal">
   <ion-header>
     <ion-title>{{ phoneNumberSignIn }}</ion-title>
   </ion-header>
@@ -14,7 +14,7 @@
         <ion-button (click)="submitPhoneNumber()" [disabled]="!canSumbitPhoneNumber">{{
           submitLabel
         }}</ion-button>
-        <ion-button color="secondary" (click)="cancel()">{{ cancelLabel }}</ion-button>
+        <ion-button color="secondary" (click)="cancel()" *ngIf="isModal">{{ cancelLabel }}</ion-button>
       </div>
       <div class="recaptcha-container">
         <div id="recaptcha-root"></div>
@@ -37,7 +37,7 @@
         <ion-button (click)="submitVerificationCode()" [disabled]="!verificationCode">{{
           submitLabel
         }}</ion-button>
-        <ion-button color="secondary" (click)="cancel()">{{ cancelLabel }}</ion-button>
+        <ion-button color="secondary" (click)="cancel()" *ngIf="isModal">{{ cancelLabel }}</ion-button>
       </div>
     </ion-col>
   </ion-row>

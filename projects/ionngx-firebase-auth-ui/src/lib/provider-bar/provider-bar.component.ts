@@ -1,18 +1,38 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { authProviders } from '../data/auth-providers';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 import { AuthProviderId } from '../enums';
 import { IonngxFirebaseAuthUiService } from '../services/ionngx-firebase-auth-ui.service';
 import { AuthProvider } from '../models/auth-provider';
+import { IonngxFirebaseAuthUiConfig, IonngxFirebaseAuthUiConfigToken } from '../config';
+import { NavigatorService } from '../services/navigator.service';
+import { ProviderService } from '../services/provider.service';
 
 @Component({
   selector: 'ionngx-firebase-auth-ui-provider-bar',
   templateUrl: './provider-bar.component.html',
   styleUrls: ['./provider-bar.component.scss'],
 })
-export class ProviderBarComponent implements OnInit {
+export class ProviderBarComponent implements OnChanges, OnInit {
   @Input()
-  public buttonColor: 'primary' | 'secondary' | 'tertiary' | 'light' | 'medium' | 'dark' | 'success' | 'warning' | 'danger' = "primary";
+  public buttonColor:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'light'
+    | 'medium'
+    | 'dark'
+    | 'success'
+    | 'warning'
+    | 'danger' = 'primary';
 
   @Input()
   public hideEmailPasswordButton: boolean = true;
@@ -20,66 +40,60 @@ export class ProviderBarComponent implements OnInit {
   @Output()
   public emailPasswordSelected: EventEmitter<void> = new EventEmitter<void>();
 
+  @Output()
+  public phoneSelected: EventEmitter<void> = new EventEmitter<void>();
+
   public providers: AuthProvider[] = [];
 
-  constructor(private service: IonngxFirebaseAuthUiService) {}
+  constructor(
+    @Inject(IonngxFirebaseAuthUiConfigToken) private config: IonngxFirebaseAuthUiConfig,
+    private navigatorService: NavigatorService,
+    private service: IonngxFirebaseAuthUiService,
+    private providerService: ProviderService
+  ) {}
 
-  public ngOnInit(): void {
-    this.prepareProviders(this.service.currentConfig.providers);
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hideEmailPasswordButton) {
+      this.loadProviders();
+    }
   }
 
-  public signIn(provider: AuthProviderId): void {
+  private loadProviders() {
+    this.providers = this.providerService.prepareProviders(
+      this.config.providers,
+      this.hideEmailPasswordButton
+    );
+  }
+
+  public ngOnInit(): void {
+    this.loadProviders();
+  }
+
+  public async signIn(provider: AuthProviderId): Promise<void> {
     if (provider === AuthProviderId.EmailAndPassword) {
-      this.emailPasswordSelected.emit();
-      return;
+      if (this.emailPasswordSelected.observers && this.emailPasswordSelected.observers.length) {
+        this.emailPasswordSelected.emit();
+        return Promise.resolve();
+      } else {
+        return this.navigatorService.signIn();
+      }
     }
-    this.service.processSignIn(provider);
+
+    if (provider === AuthProviderId.PhoneNumber) {
+      if (this.phoneSelected.observers && this.phoneSelected.observers.length) {
+        this.phoneSelected.emit();
+        return Promise.resolve();
+      } else {
+        return this.navigatorService.signInWithPhoneNumber();
+      }
+    }
+
+    return this.service.signIn(provider);
   }
 
   public visibleProviders(): AuthProvider[] {
-    return this.providers.filter((p: AuthProvider) => p.id !== AuthProviderId.EmailAndPassword || !this.hideEmailPasswordButton);
-  }
-
-  private prepareProviders(providers: AuthProviderId | AuthProviderId[]): void {
-    if (!Array.isArray(providers)) {
-      if (providers === AuthProviderId.ALL) {
-        this.prepareAllProviders();
-      }
-
-      if (providers !== AuthProviderId.Anonymous) {
-        this.addProviderById(providers);
-      }
-    } else {
-      console.table(providers);
-      for (const providerId of providers) {
-        if (
-          providerId === AuthProviderId.ALL ||
-          providerId === AuthProviderId.Anonymous ||
-          (providerId === AuthProviderId.EmailAndPassword && this.hideEmailPasswordButton)
-        ) {
-          continue;
-        }
-        this.addProviderById(providerId);
-      }
-    }
-  }
-
-  private prepareAllProviders(): void {
-    this.addProviderById(AuthProviderId.Apple);
-    this.addProviderById(AuthProviderId.EmailAndPassword);
-    this.addProviderById(AuthProviderId.Facebook);
-    this.addProviderById(AuthProviderId.Github);
-    this.addProviderById(AuthProviderId.Google);
-    this.addProviderById(AuthProviderId.Microsoft);
-    this.addProviderById(AuthProviderId.PhoneNumber);
-    this.addProviderById(AuthProviderId.Twitter);
-    this.addProviderById(AuthProviderId.Yahoo);
-  }
-
-  private addProviderById(id: AuthProviderId): void {
-    const provider = authProviders.find((v: AuthProvider) => v.id === id);
-    if (provider) {
-      this.providers.push(provider);
-    }
+    return this.providers.filter(
+      (p: AuthProvider) => p.id !== AuthProviderId.EmailAndPassword || !this.hideEmailPasswordButton
+    );
   }
 }

@@ -1,5 +1,10 @@
 <ion-item *ngIf="user">
-  <ion-label>{{ user.displayName }}</ion-label>
+  <ion-icon
+    [ios]="authProvider.icon + '-outline'"
+    [md]="authProvider.icon + '-sharp'"
+    slot="start"
+  ></ion-icon>
+  <ion-label>{{ displayName }}</ion-label>
 </ion-item>
 <ion-list>
   <ion-item *ngFor="let link of additionalLinks" (click)="handleMenuLinkClick(link)">

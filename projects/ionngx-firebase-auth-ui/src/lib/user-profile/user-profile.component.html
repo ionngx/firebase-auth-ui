@@ -1,0 +1,69 @@
+<div class="user-profile-wrapper">
+  <ion-toolbar *ngIf="isModal">
+    <ion-header>
+      <ion-title>{{ userProfileLabel }}</ion-title>
+    </ion-header>
+  </ion-toolbar>
+
+  <p>{{ userProfileMessage }}</p>
+  <ion-item>
+    <ion-label position="floating">{{ displayNameLabel }}</ion-label>
+    <ion-input
+      #displayNameInput
+      type="text"
+      [(ngModel)]="displayName"
+      name="displayName"
+      [placeholder]="displayNameLabel"
+      [readonly]="!isEditingDisplayName"
+    ></ion-input>
+    <ion-fab-button
+      size="small"
+      slot="end"
+      (click)="editDisplayName()"
+      *ngIf="!isEditingDisplayName"
+      [disabled]="isEditingPhotoUrl"
+      ><ion-icon ios="create-outline" md="create-sharp"></ion-icon
+    ></ion-fab-button>
+    <ion-fab-button size="small" slot="end" (click)="saveDisplayName()" *ngIf="isEditingDisplayName"
+      ><ion-icon ios="checkmark-outline" md="checkmark-sharp"></ion-icon
+    ></ion-fab-button>
+    <ion-fab-button
+      size="small"
+      slot="end"
+      (click)="cancelEditDisplayName()"
+      *ngIf="isEditingDisplayName"
+      ><ion-icon ios="close-outline" md="close-sharp"></ion-icon
+    ></ion-fab-button>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">{{ photoUrlLabel }}</ion-label>
+    <ion-input #photoUrlInput
+      type="text"
+      [(ngModel)]="photoUrl"
+      name="photoUrl"
+      [placeholder]="photoUrlLabel"
+      readonly="true"
+    ></ion-input>
+    <ion-fab-button
+      size="small"
+      slot="end"
+      (click)="editPhotoUrl()"
+      *ngIf="!isEditingPhotoUrl"
+      [disabled]="isEditingDisplayName"
+      ><ion-icon ios="create-outline" md="create-sharp"></ion-icon
+    ></ion-fab-button>
+    <ion-fab-button size="small" slot="end" (click)="savePhotoUrl()" *ngIf="isEditingPhotoUrl"
+      ><ion-icon ios="checkmark-outline" md="checkmark-sharp"></ion-icon
+    ></ion-fab-button>
+    <ion-fab-button
+      size="small"
+      slot="end"
+      (click)="cancelEditPhotoUrl()"
+      *ngIf="isEditingPhotoUrl"
+      ><ion-icon ios="close-outline" md="close-sharp"></ion-icon
+    ></ion-fab-button>
+  </ion-item>
+  <div class="button-bar">
+    <ion-button color="secondary" (click)="cancel()" *ngIf="isModal">{{ cancelLabel }}</ion-button>
+  </div>
+</div>
